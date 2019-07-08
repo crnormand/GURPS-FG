@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<template name="button_iadd">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<icon normal="button_add" pressed="button_add_down" />
+			<tooltip textres="button_add" />
+			<invisible />
+			<script>
+				function onButtonPress()
+					window[target[1]].addEntry(true);
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+	<template name="button_iedit">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<state icon="button_edit" tooltipres="button_editon" />
+			<state icon="button_edit_down" tooltipres="button_editoff" />
+			<script>
+				function onInit()
+					if visible then
+						return;
+					end
+					local node = window.getDatabaseNode();
+					if not node or node.isReadOnly() then
+						setVisible(false);
+					end
+				end
+				
+				function onValueChanged()
+					local sAdd = target[1] .. "_iadd";
+					if window[sAdd] then
+						window[sAdd].setVisible(getValue() == 1);
+					end
+					local sSpacer = target[1] .. "_ispacer";
+					if window[sSpacer] then
+						window[sSpacer].setVisible(getValue() == 1);
+					end
+					if window.onEditModeChanged then
+						window.onEditModeChanged(getValue() == 1);
+					end
+					window[target[1]].update();
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+	<template name="button_idelete">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<state icon="button_delete" tooltipres="button_delete" />
+			<state icon="button_deleteconfirm" tooltipres="button_deleteconfirm" />
+			<tooltip textres="button_delete" />
+			<invisible />
+			<script>
+				function setVisibility(bVisible)
+					setValue(0);
+					setVisible(bVisible);
+				end
+				
+				function onButtonPress()
+					if getValue() == 0 then
+						if window.delete then
+							window.delete();
+						else
+							window.getDatabaseNode().delete();
+						end
+					end
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+
+	<template name="sub_charsheet">
+		<subwindow>
+			<bounds>0,65,-1,-1</bounds>
+		</subwindow>
+	</template>
+
+	<template name="frame_chardetail">
+		<genericcontrol>
+			<frame name="ct_subgroupbox" />
+			<disabled />
+		</genericcontrol>
+	</template>
+
+
+	<!-- List Item Sub-sections -->	
+	<template name="frame_detailsub">
+		<genericcontrol>
+			<anchored>
+				<left offset="33" />
+				<top offset="-8" />
+				<right offset="-4" />
+				<bottom offset="8" />
+			</anchored>
+			<frame name="ct_subgroupbox" />
+			<disabled />
+		</genericcontrol>
+	</template>
+	<template name="icon_detailsection">
+		<genericcontrol>
+			<anchored width="20" height="20">
+				<left offset="10" />
+				<top parent="bottomanchor" anchor="bottom" relation="current" offset="10" />
+			</anchored>
+		</genericcontrol>
+	</template>
+	
+	<template name="tabs_charmain">
+		<buttongroup_tabs name="tabs">
+			<anchored width="18" height="92">
+				<top offset="130" />
+				<right offset="-31" />
+			</anchored>
+		</buttongroup_tabs>
+	</template>
+
+	<template name="tabs_charabilities">
+		<buttongroup_tabs name="tabs">
+			<anchored width="18" height="92">
+				<top offset="50" />
+				<right offset="-31" />
+			</anchored>
+		</buttongroup_tabs>
+	</template>
+
+	<template name="tabs_charcombat">
+		<buttongroup_tabs name="tabs">
+			<anchored width="18" height="92">
+				<top offset="140" />
+				<right offset="-31" />
+			</anchored>
+		</buttongroup_tabs>
+	</template>
+
+	
+	<template name="label_attribute">
+		<label_fieldtop>
+			<anchored offset="0,-6" height="15"/>
+			<frame name="attributelabel" />
+		</label_fieldtop>
+	</template>
+
+	<template name="label_columntop">
+		<stringcontrol>
+			<font>sheetlabelmini</font>
+			<center />
+		</stringcontrol>
+	</template>
+
+	<template name="label_charsheet">
+		<stringcontrol>
+			<font>sheetlabelsmall</font>
+			<left />
+		</stringcontrol>
+	</template>
+
+
+	<template name="number_charmodfield">
+		<basicnumber>
+			<script>
+				function onInit()
+				  setHoverCursor("hand");
+				  
+				  local w = addBitmapWidget("field_modifier");
+				  w.setPosition("bottomleft", -1, -4);
+				end
+
+				function actionDrag(draginfo, description)
+					if description then 
+						draginfo.setType("number");
+						draginfo.setDescription(description);
+						draginfo.setStringData(description);
+						draginfo.setNumberData(getValue());
+					end
+					return true;
+				end
+				
+				function action(description)
+					if description then 
+						ModifierStack.addSlot(description, getValue());
+					end
+					return true;
+				end
+			</script>
+			<hideonvalue>0</hideonvalue>
+			<displaysign />
+			<center />
+			<nodrop />
+		</basicnumber>
+	</template>
+	
+	<template name="number_charfield">
+		<basicnumber>
+			<script file="campaign/scripts/campaign_rollable.lua" />
+			<center />
+			<nodrop />
+		</basicnumber>
+	</template>
+
+	<template name="string_charfield">
+		<basicstring>
+			<frame mergerule="replace" name="fielddark" offset="7,5,7,5" />
+			<script file="campaign/scripts/campaign_rollable.lua" />
+			<center />
+			<nodrop />
+		</basicstring>
+	</template>
+
+	<template name="stringu_charfield">
+		<stringu>
+			<nodrop />
+		</stringu>
+	</template>
+
+<!-- 	<template name="numberu_charfield"> -->
+<!-- 		<numberfield> -->
+<!-- 			<frame mergerule="replace" name="textline" hidereadonly="true" offset="0,-1,0,0" /> -->
+<!-- 			<nodrop /> -->
+<!-- 		</numberfield> -->
+<!-- 	</template> -->
+
+	<template name="number_attribute">
+		<number_charfield>
+			<anchored width="40" height="30" />
+			<font>sheetnumberlarge</font>
+		</number_charfield>
+	</template>
+
+	<template name="string_attribute">
+		<string_charfield>
+			<anchored width="40" height="30" />
+			<font>sheetnumberlarge</font>
+		</string_charfield>
+	</template>
+
+	<template name="number_charlevelfield">
+		<number_charfield>
+			<hideonvalue>0</hideonvalue>
+		</number_charfield>
+	</template>
+
+	<template name="string_chardefensefield">
+		<string_charfield>
+		</string_charfield>
+	</template>
+
+	<template name="string_chardamagefield">
+		<string_charfield>
+		</string_charfield>
+	</template>
+
+	<template name="number_labeled">
+		<numberfield>
+			<font>sheettext</font>
+			<lineoffset default="on">1</lineoffset>
+			<script>
+				labelwidget = nil;
+			
+				function onInit()
+					if labelres then
+						labelwidget = addTextWidget("sheetlabelinline", string.upper(Interface.getString(labelres[1])));
+					else
+						labelwidget = addTextWidget("sheetlabelinline", string.upper(label[1]));
+					end
+					if labelwidget then
+						local w,h = labelwidget.getSize();
+						labelwidget.setPosition("bottomleft", w/2, h/2-4);
+					end
+				end
+			</script>
+		</numberfield>
+	</template>
+
+
+	<template name="number_charpoint">
+		<number_charfield>
+			<font>sheetnumbersmall</font>
+			<center />
+			<noreset />
+			<nodrag />
+			<nodrop />
+		</number_charfield>
+	</template>
+
+	<template name="number_charpointfield">
+		<number_charfield>
+			<frame merge="replace" name="textline" />
+			<color>#808080</color>
+			<script file="campaign/scripts/char_points.lua" />
+		</number_charfield>
+	</template>
+
+	<template name="number_charpointtotals">
+		<number_charpoint>
+			<frame merge="replace" name="textline" />
+			<readonly />
+		</number_charpoint>
+	</template>
+	
+	<template name="button_charroll">
+		<button_roll>
+			<script file="campaign/scripts/campaign_rollable.lua" />
+		</button_roll>
+	</template>
+	
+	<template name="button_modifier">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<icon normal="button_action_modifier" pressed="button_action_modifier_down" />
+		</buttoncontrol>
+		<script>
+			function actionDrag(draginfo, desc, value)
+				if (desc and value) then 
+					draginfo.setType("number");
+					draginfo.setDescription(desc);
+					draginfo.setStringData(desc);
+					draginfo.setNumberData(value);
+				end
+				return true;
+			end
+			
+			function action(desc, value)
+				if (desc and value) then 
+					ModifierStack.addSlot(desc, value);
+				end
+				return true;
+			end
+		</script>
+	</template>
+
+	<template name="button_toggledetail">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<state icon="details" />
+			<state icon="details_down" />
+			<script>
+				function onValueChanged()
+					if window.toggleDetail then
+						window.toggleDetail();
+					end
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+
+	<template name="button_toggleweaponmodes">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<state icon="weapon_modes" />
+			<state icon="weapon_modes_down" />
+			<script>
+				function onValueChanged()
+					if window.toggleWeaponModes then
+						window.toggleWeaponModes();
+					end
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+
+	<template name="button_toggleweaponmodifiers">
+		<buttoncontrol>
+			<anchored width="20" height="20" />
+			<state icon="weapon_modifiers" />
+			<state icon="weapon_modifiers_down" />
+			<script>
+				function onValueChanged()
+					if window.toggleWeaponModifiers then
+						window.toggleWeaponModifiers();
+					end
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+
+
+	<template name="list_charencumbrance">
+		<list_text>
+			<datasource>.encumbrance.encumbrancelist</datasource>
+			<class>char_encumbrance</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charlanguage">
+		<list_text>
+			<datasource>.traits.languagelist</datasource>
+			<class>char_language</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charculturalfamiliarity">
+		<list_text>
+			<datasource>.traits.culturalfamiliaritylist</datasource>
+			<class>char_culturalfamiliarity</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charreactionmodifier">
+		<list_text>
+			<datasource>.traits.reactionmodifierlist</datasource>
+			<class>char_reactionmodifier</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charadperk">
+		<list_text>
+			<datasource>.traits.adslist</datasource>
+			<class>char_trait</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_chardisadquirk">
+		<list_text>
+			<datasource>.traits.disadslist</datasource>
+			<class>char_trait</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charskill">
+		<list_text>
+			<datasource>.abilities.skilllist</datasource>
+			<class>char_skill</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charspell">
+		<list_text>
+			<datasource>.abilities.spelllist</datasource>
+			<class>char_spell</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charpower">
+		<list_text>
+			<datasource>.abilities.powerlist</datasource>
+			<class>char_power</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charother">
+		<list_text>
+			<datasource>.abilities.otherlist</datasource>
+			<class>char_other</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charnote">
+		<list_text>
+			<datasource>.notelist</datasource>
+			<class>char_note</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_chardefenses">
+		<list_text>
+			<datasource>.combat.defenseslist</datasource>
+			<class>char_defenses</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charmeleecombat">
+		<list_text>
+			<datasource>.combat.meleecombatlist</datasource>
+			<class>char_meleecombat</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charrangedcombat">
+		<list_text>
+			<datasource>.combat.rangedcombatlist</datasource>
+			<class>char_rangedcombat</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_npcmeleecombat">
+		<list_text>
+			<datasource>.combat.meleecombatlist</datasource>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+			<allowcreate />
+			<allowdelete />
+			<noscroll />
+		</list_text>
+	</template>
+
+	<template name="list_npcrangedcombat">
+		<list_text>
+			<datasource>.combat.rangedcombatlist</datasource>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+			<allowcreate />
+			<allowdelete />
+			<noscroll />
+		</list_text>
+	</template>
+
+	<template name="list_npcabilities">
+		<list_text>
+			<datasource>.abilities.abilitieslist</datasource>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+			<allowcreate />
+			<allowdelete />
+			<noscroll />
+		</list_text>
+	</template>
+
+	<template name="list_charmodifier">
+		<list_text>
+			<datasource>.modifierlist</datasource>
+			<class>basic_modifier</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charmeleemode">
+		<list_text>
+			<datasource>.meleemodelist</datasource>
+			<class>char_meleemode</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+	<template name="list_charrangedmode">
+		<list_text>
+			<datasource>.rangedmodelist</datasource>
+			<class>char_rangemode</class>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+		</list_text>
+	</template>
+
+</root>

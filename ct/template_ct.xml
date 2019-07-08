@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<!-- GURPS combat tracker templates -->
+
+	<template name="spacer_clientct_active_top">
+		<genericcontrol name="active_spacer_top">
+			<anchored position="insidetopleft" width="0" height="5" />
+			<invisible />
+		</genericcontrol>
+	</template>
+	<template name="spacer_clientct_active_bottom">
+		<genericcontrol name="active_spacer_bottom">
+			<anchored width="0" height="5">
+				<top parent="active_spacer_top" anchor="bottom" relation="relative" />
+				<left />
+			</anchored>
+			<invisible />
+		</genericcontrol>
+	</template>
+	<template name="anchor_clientct_right">
+		<genericcontrol name="rightanchor">
+			<anchored width="0" height="0">
+				<top parent="active_spacer_top" anchor="bottom" offset="10" />
+				<right />
+			</anchored>
+			<invisible />
+		</genericcontrol>
+	</template>
+	<template name="spacer_clientct_middle">
+		<genericcontrol name="spacer">
+			<anchored width="0" height="7">
+				<top parent="active_spacer_top" anchor="bottom" relation="relative" />
+				<left />
+			</anchored>
+		</genericcontrol>
+	</template>
+	<template name="button_clientct_friendfoe">
+		<button_faction>
+			<anchored to="rightanchor">
+				<top />
+				<right anchor="left" relation="relative" offset="-5" />
+			</anchored>
+			<script>
+				function onValueChanged()
+					window.onFactionChanged();
+				end
+			</script>
+		</button_faction>
+	</template>
+
+	<template name="list_ctbox_host">
+		<windowlist name="list">
+			<anchored to="contentanchor">
+				<top anchor="bottom" relation="relative" offset="5" />
+				<left offset="-30" />
+				<right offset="10" />
+				<bottom parent="" offset="-55" />
+			</anchored>
+			<datasource>.list</datasource>
+			<class>ct_entry</class>
+			<empty font="list-empty" textres="ct_emptylist" />
+			<script file="ct/scripts/ct.lua" />
+		</windowlist>
+	</template>
+
+	<template name="list_ctbox_client">
+		<windowlist name="list">
+			<anchored to="contentanchor">
+				<top anchor="bottom" relation="relative" offset="5" />
+				<left offset="-30" />
+				<right offset="10" />
+				<bottom parent="" offset="-55" />
+			</anchored>
+			<datasource>.list</datasource>
+			<class>client_ct_entry</class>
+			<script file="ct/scripts/clientct.lua" />
+		</windowlist>
+	</template>
+
+	<template name="frame_ctbox_host_header_toggles">
+		<frame_ct name="header_toggles">
+			<anchored to="headeranchor" height="35" width="100">
+				<top offset="-9" />
+				<right offset="-13" />
+			</anchored>
+		</frame_ct>
+	</template>
+	
+	<template name="label_ct_ability">
+		<label_fieldtop>
+			<anchored offset="0,-5" height="13"/>
+			<frame name="attributelabel" />
+		</label_fieldtop>
+	</template>
+	<template name="number_ct_ability">
+		<number_ct>
+			<anchored width="40" height="20" />
+			<default>0</default>
+			<script file="campaign/scripts/campaign_rollable.lua" />
+		</number_ct>
+	</template>
+
+	<template name="string_ct_ability">
+		<basicstring>
+			<anchored width="40" height="20" />
+			<frame mergerule="replace" name="fielddark" offset="7,5,7,5" />
+			<script file="common/scripts/string_crosslink.lua" />
+			<script file="campaign/scripts/campaign_rollable.lua" />
+			<center />
+		</basicstring>
+	</template>
+	
+	<template name="number_ct_effect_duration">
+		<basicnumber name="duration">
+			<anchored to="rightanchor" height="20">
+				<sizelimits>
+					<minimum width="20" />
+				</sizelimits>
+				<top />
+				<right anchor="left" relation="relative" offset="-10" />
+			</anchored>
+			<min>0</min>
+			<hideonvalue>0</hideonvalue>
+			<tooltip textres="ct_tooltip_effectdur" />
+			<script>
+				function onDragStart(button, x, y, draginfo)
+					return window.onDragStart(button, x, y, draginfo);
+				end
+
+				function onDrop(x, y, draginfo)
+					if draginfo.getType() ~= "number" then
+						return window.onDrop(x, y, draginfo);
+					end
+				end
+			</script>
+		</basicnumber>
+	</template>
+	
+	<template name="number_ct_effect_units">
+		<button_stringcycler name="units">
+			<anchored to="rightanchor" height="20" width="30">
+				<top />
+				<right anchor="left" relation="relative" offset="-10" />
+			</anchored>
+			<gmeditonly />
+			<parameters>
+				<labelsres>effect_label_durunitsec+|effect_label_durunitsec|effect_label_durunitmin|effect_label_durunithr|effect_label_durunitday</labelsres>
+				<values>sec+|sec|min|hr|day</values>
+			</parameters>
+			<tooltip textres="ct_tooltip_effectunit" />
+			<script>
+				function onDragStart(button, x, y, draginfo)
+					return window.actionDrag(draginfo);
+				end
+			</script>
+		</button_stringcycler>
+	</template>
+	
+	<template name="list_ctmeleecombat">
+		<list_text>
+			<datasource>.combat.meleecombatlist</datasource>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+			<noscroll />
+		</list_text>
+	</template>
+
+	<template name="list_ctrangedcombat">
+		<list_text>
+			<datasource>.combat.rangedcombatlist</datasource>
+			<sortby><control>name</control></sortby>
+			<newfocus>name</newfocus>
+			<noscroll />
+		</list_text>
+	</template>
+	
+</root>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<!-- Decals -->
+	<icon name="desktopdecal_gurps" file="graphics/decals/desktopdecal_gurps.png"/>
+	<icon name="desktopdecal_dfrpg" file="graphics/decals/desktopdecal_dfrpg.png"/>
+
+	<!-- Buttons -->
+	<icon name="details" file="graphics/buttons/button_details.png" />
+	<icon name="details_down" file="graphics/buttons/button_details_down.png" />
+
+	<icon name="skip" file="graphics/buttons/button_skip.png" />
+	<icon name="skip_down" file="graphics/buttons/button_skip_down.png" />
+
+	<icon name="stats" file="graphics/buttons/button_stats.png" />
+	<icon name="stats_down" file="graphics/buttons/button_stats_down.png" />
+
+	<icon name="combat" file="graphics/buttons/button_combat.png" />
+	<icon name="combat_down" file="graphics/buttons/button_combat_down.png" />
+
+	<icon name="weapon_modes" file="graphics/buttons/button_modes.png" />
+	<icon name="weapon_modes_down" file="graphics/buttons/button_modes_down.png" />
+
+	<icon name="modifiers" file="graphics/buttons/button_modifiers.png" />
+	<icon name="modifiers_down" file="graphics/buttons/button_modifiers_down.png" />
+
+
+	<!-- Icons -->
+	<icon name="action_roll" file="graphics/icons/action_roll.png" />
+	<icon name="action_effect" file="graphics/icons/action_effect.png" />
+	<icon name="action_melee" file="graphics/icons/action_melee.png" />
+	<icon name="action_ranged" file="graphics/icons/action_ranged.png" />
+	<icon name="action_defense" file="graphics/icons/action_defense.png" />
+	<icon name="action_damage" file="graphics/icons/action_damage.png" />
+	<icon name="action_explosion" file="graphics/icons/action_explosion.png" />
+
+	<icon name="field_rollable" file="graphics/icons/field_rollable.png" />
+	<icon name="field_modifier" file="graphics/icons/field_modifier.png" />
+
+	<!-- Icons -->
+	<icon name="tool_mapscale_30" file="graphics/toolbar/tool_mapscale_30.png" />
+
+	<!-- Graphics -->
+	<includefile source="graphics/graphics_frames.xml" />
+
+	<!-- Tab controls -->
+	<icon name="tab_main" file="graphics/tabs/tab_main.png" />
+	<icon name="tab_reactionmodifiers" file="graphics/tabs/tab_reactionmodifiers.png" />
+	<icon name="tab_secondarycharacteristics" file="graphics/tabs/tab_secondarycharacteristics.png" />
+	<icon name="tab_traits" file="graphics/tabs/tab_traits.png" />
+	<icon name="tab_abilities" file="graphics/tabs/tab_abilities.png" />
+	<icon name="tab_skills" file="graphics/tabs/tab_skills.png" />
+	<icon name="tab_spells" file="graphics/tabs/tab_spells.png" />
+	<icon name="tab_powers" file="graphics/tabs/tab_powers.png" />
+	<icon name="tab_other" file="graphics/tabs/tab_other.png" />
+	<icon name="tab_combat" file="graphics/tabs/tab_combat.png" />
+	<icon name="tab_meleecombat" file="graphics/tabs/tab_melee.png" />
+	<icon name="tab_rangedcombat" file="graphics/tabs/tab_ranged.png" />
+	<icon name="tab_defenses" file="graphics/tabs/tab_defenses.png" />
+	<icon name="tab_inventory" file="graphics/tabs/tab_inventory.png" />
+	<icon name="tab_notes" file="graphics/tabs/tab_notes.png" />
+	
+	<!-- Fonts -->
+	<includefile source="graphics/graphics_fonts.xml" />
+	
+	<!-- Modifier stack -->
+	<icon name="modcollector" file="graphics/icons/modcollector.png" />
+	<icon name="modcollector_counter" file="graphics/icons/modcollector_counter.png" />
+	
+</root>

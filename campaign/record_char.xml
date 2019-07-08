@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<windowclass name="charsheet">
+
+		<frame>charsheet</frame>
+		<placement>
+			<size width="525" height="611" />
+		</placement>
+		<sizelimits>
+			<dynamic />
+			<minimum width="525" height="611" />
+		</sizelimits>
+		<softclose />
+		<nodelete />
+		<playercontrol />
+		<tooltip field="name" />
+		<script file="campaign/scripts/char.lua" />
+		
+		<sheetdata>
+		
+			<genericcontrol>
+				<bounds>15,21,45,45</bounds>
+				<icon>charlist_base</icon>
+				<disabled />
+			</genericcontrol>
+			<portrait_charlocal name="localportrait">
+				<bounds>15,21,45,45</bounds>
+				<invisible />
+			</portrait_charlocal>
+			<portrait_char name="portrait">
+				<bounds>15,21,45,45</bounds>
+			</portrait_char>
+
+			<frame_char name="overviewframe">
+				<bounds>60,20,-80,45</bounds>
+			</frame_char>
+			<string_labeled name="name">
+				<anchored to="overviewframe" position="insidetopleft" offset="15,10" height="20">
+					<right offset="-15" />
+				</anchored>
+				<labelres>char_label_charactername</labelres>
+			</string_labeled>
+			
+			<button_charactivate name="speak">
+				<bounds>-41,30,23,22</bounds>
+			</button_charactivate>
+		
+			<tokenfield name="token">
+				<bounds>-86,23,40,40</bounds>
+				<empty>token_empty</empty>
+				<tooltip textres="char_tooltip_token" />
+			</tokenfield>
+		
+			<sub_charsheet name="main">
+				<class>charsheet_main</class>
+			</sub_charsheet>
+			<sub_charsheet name="traits">
+				<class>charsheet_traits</class>
+			</sub_charsheet>
+			<sub_charsheet name="abilities">
+				<class>charsheet_abilities</class>
+			</sub_charsheet>
+			<sub_charsheet name="combat">
+				<class>charsheet_combat</class>
+			</sub_charsheet>
+			<sub_charsheet name="inventory">
+				<class>charsheet_inventory</class>
+			</sub_charsheet>
+			<sub_charsheet name="notes">
+				<class>charsheet_notes</class>
+			</sub_charsheet>
+
+			<tabs_charsheet>
+				<tab>
+					<icon>tab_main</icon>
+					<subwindow>main</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_traits</icon>
+					<subwindow>traits</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_abilities</icon>
+					<subwindow>abilities</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_combat</icon>
+					<subwindow>combat</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_inventory</icon>
+					<subwindow>inventory</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_notes</icon>
+					<subwindow>notes</subwindow>
+				</tab>
+				<activate>1</activate>
+			</tabs_charsheet>
+		
+			<resize_charsheet />
+			<close_charsheet />
+		</sheetdata>
+	</windowclass>
+</root>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<windowclass name="charsheet_combat">
+		<sheetdata>
+		
+			<!-- CURRENT STATS -->
+			
+			<frame_char name="currentattributesframe">
+				<bounds>15,0,210,90</bounds>
+			</frame_char>
+			<label_frametop>
+				<anchored to="currentattributesframe" />
+				<static textres="char_label_currentattributes" />
+			</label_frametop>
+
+			<number_attribute name="hps" source="attributes.hps">
+				<anchored to="currentattributesframe" position="insidetopleft" offset="25,40" />
+				<tabtarget>
+					<next>fps</next>
+				</tabtarget>
+			</number_attribute>
+			<label_attribute>
+				<anchored to="hps" />
+				<static>cHP</static>
+			</label_attribute>
+
+			<number_attribute name="fps" source="attributes.fps">
+				<anchored to="currentattributesframe" position="insidetopleft" offset="85,40" />
+				<tabtarget>
+					<next>move</next>
+					<prev>hps</prev>
+				</tabtarget>
+			</number_attribute>
+			<label_attribute>
+				<anchored to="fps" />
+				<static>cFP</static>
+			</label_attribute>
+
+			<string_attribute name="move" source="attributes.move">
+				<anchored to="currentattributesframe" position="insidetopleft" offset="145,40" />
+				<tabtarget>
+					<next>dodge</next>
+					<prev>fps</prev>
+				</tabtarget>
+			</string_attribute>
+			<label_attribute>
+				<anchored to="move" />
+				<static>Move</static>
+			</label_attribute>
+
+			
+			<!-- DEFENSES -->
+			<frame_char name="defensesframe">
+				<bounds>225,0,270,90</bounds>
+			</frame_char>
+			<label_frametop>
+				<anchored to="defensesframe" />
+				<static textres="char_label_defenses" />
+			</label_frametop>
+
+			<number_attribute name="dodge" source="combat.dodge">
+				<rollable_dodge />
+				<anchored to="defensesframe" position="insidetopleft" offset="25,40" />
+				<tabtarget>
+					<next>parry</next>
+					<prev>move</prev>
+				</tabtarget>
+			</number_attribute>
+			<label_attribute>
+				<anchored to="dodge" />
+				<static textres="char_label_dodge" />
+			</label_attribute>
+
+			<number_attribute name="parry" source="combat.parry">
+				<rollable_parry />
+				<anchored to="defensesframe" position="insidetopleft" offset="85,40" />
+				<tabtarget>
+					<next>block</next>
+					<prev>dodge</prev>
+				</tabtarget>
+			</number_attribute>
+			<label_attribute>
+				<anchored to="parry" />
+				<static textres="char_label_parry" />
+			</label_attribute>
+
+			<number_attribute name="block" source="combat.block">
+				<rollable_block />
+				<anchored to="defensesframe" position="insidetopleft" offset="145,40" />
+				<tabtarget>
+					<next>dr</next>
+					<prev>parry</prev>
+				</tabtarget>
+			</number_attribute>
+			<label_attribute>
+				<anchored to="block" />
+				<static textres="char_label_block" />
+			</label_attribute>
+
+			<string_attribute name="dr" source="combat.dr">
+				<anchored to="defensesframe" position="insidetopleft" offset="205,40" />
+				<tabtarget>
+					<prev>block</prev>
+				</tabtarget>
+			</string_attribute>
+			<label_attribute>
+				<anchored to="dr" />
+				<static textres="char_label_dr" />
+			</label_attribute>
+
+
+			<subwindow name="meleecombat">
+				<bounds>0,90,-1,-2</bounds>
+				<class>charsheet_meleecombat</class>
+			</subwindow>
+
+			<subwindow name="rangedcombat">
+				<bounds>0,90,-1,-2</bounds>
+				<class>charsheet_rangedcombat</class>
+			</subwindow>
+
+			<subwindow name="defenses">
+				<bounds>0,90,-1,-2</bounds>
+				<class>charsheet_defenses</class>
+			</subwindow>
+
+			<tabs_charcombat>
+				<tab>
+					<icon>tab_meleecombat</icon>
+					<subwindow>meleecombat</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_rangedcombat</icon>
+					<subwindow>rangedcombat</subwindow>
+				</tab>
+				<tab>
+					<icon>tab_defenses</icon>
+					<subwindow>defenses</subwindow>
+				</tab>
+				<activate>1</activate>
+			</tabs_charcombat>
+		</sheetdata>
+	</windowclass>
+
+</root>
