@@ -40,6 +40,19 @@ end
 
 function onEffectActorStartTurn(nodeActor, nodeEffect)
     DB.setValue(nodeEffect, "status", "number", 1);
+    --    Added support for TURN based effects (e.g. No Active Defense, All Out Defense) that last until your next turn
+    local sUnits = DB.getValue(nodeEffect, "units", "");
+    if sUnits == "turn" then
+      local nDuration = DB.getValue(nodeEffect, "duration", 0);
+      nDuration = nDuration - 1;
+      if nDuration <= 0 then
+        EffectManager.expireEffect(nodeActor, nodeEffect, 0);
+        -- If we deleted the effect, return true so the parent handler doesn't try to continue
+        return true;
+      else
+        DB.setValue(nodeEffect, "duration", "number", nDuration);
+      end
+    end
 end
 
 function onEffectActorEndTurn(nodeActor, nodeEffect)
@@ -60,7 +73,7 @@ function onEffectActorEndTurn(nodeActor, nodeEffect)
     nDuration = nDuration - 1;
   end
 
-  if nDuration <= 0 and sUnits ~= "" and sUnits ~= "sec+" then
+  if nDuration <= 0 and sUnits ~= "" and sUnits ~= "sec+" and sUnits ~= "turn" then
     EffectManager.expireEffect(nodeActor, nodeEffect, 0);
   else
     DB.setValue(nodeEffect, "status", "number", 1);
@@ -77,6 +90,8 @@ function onEffectTextEncode(rEffect)
       sOutputUnits = "SEC+";
     elseif rEffect.sUnits == "sec" then
       sOutputUnits = "SEC";
+    elseif rEffect.sUnits == "turn" then
+      sOutputUnits = "TURN";
     elseif rEffect.sUnits == "min" then
       sOutputUnits = "MIN";
     elseif rEffect.sUnits == "hr" then
@@ -103,6 +118,8 @@ function onEffectTextDecode(sEffect, rEffect)
       rEffect.sUnits = "sec+";
     elseif sUnits == "SEC" then
       rEffect.sUnits = "sec";
+    elseif sUnits == "TURN" then
+      rEffect.sUnits = "turn";
     elseif sUnits == "MIN" then
       rEffect.sUnits = "min";
     elseif sUnits == "HR" then

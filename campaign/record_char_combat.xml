@@ -29,7 +29,29 @@
 				<anchored to="hps" />
 				<static>cHP</static>
 			</label_attribute>
-
+			
+			<buttoncontrol name="inc_hp">
+				<anchored to="hps" width="11" height="12" position="insidetopright" offset="-3,3" />
+				<state icon="field_modifier_plus" />
+ 				<script>
+ 					function onButtonPress()
+						local node = window.getDatabaseNode()
+						Debug.console("node", node)
+						DB.setValue(node, "attributes.hps", "number", DB.getValue(node, "attributes.hps", 0) + 1)
+					end
+				</script>
+ 			</buttoncontrol>
+			<buttoncontrol name="dec_hp">
+				<anchored to="hps" width="11" height="12" position="insidebottomright" offset="-3,0" />
+				<state icon="field_modifier_minus" />
+ 				<script>
+ 					function onButtonPress()
+						local node = window.getDatabaseNode()
+						DB.setValue(node, "attributes.hps", "number", DB.getValue(node, "attributes.hps", 0) - 1);
+					end
+				</script>
+ 			</buttoncontrol>
+			
 			<number_attribute name="fps" source="attributes.fps">
 				<anchored to="currentattributesframe" position="insidetopleft" offset="85,40" />
 				<tabtarget>
@@ -41,7 +63,28 @@
 				<anchored to="fps" />
 				<static>cFP</static>
 			</label_attribute>
-
+			
+			<buttoncontrol name="inc_fp">
+				<anchored to="fps" width="11" height="12" position="insidetopright" offset="-3,3" />
+				<state icon="field_modifier_plus" />
+ 				<script>
+ 					function onButtonPress()
+						local node = window.getDatabaseNode()
+						DB.setValue(node, "attributes.fps", "number", DB.getValue(node, "attributes.fps", 0) + 1);
+					end
+				</script>
+ 			</buttoncontrol>
+			<buttoncontrol name="dec_fp">
+				<anchored to="fps" width="11" height="12" position="insidebottomright" offset="-3,0" />
+				<state icon="field_modifier_minus" />
+ 				<script>
+ 					function onButtonPress()
+						local node = window.getDatabaseNode()
+						DB.setValue(node, "attributes.fps", "number", DB.getValue(node, "attributes.fps", 0) - 1);
+					end
+				</script>
+ 			</buttoncontrol>
+			
 			<string_attribute name="move" source="attributes.move">
 				<anchored to="currentattributesframe" position="insidetopleft" offset="145,40" />
 				<tabtarget>

@@ -301,6 +301,32 @@
 					end
 				</script>
 			</number_ct_crosslink>
+			
+			<buttoncontrol name="inc_hp">
+				<anchored to="hps" width="11" height="12" position="insidetopright" offset="-3,0" />
+				<state icon="field_modifier_plus" />
+ 				<script>
+ 					function onButtonPress()
+ 						local node = window.getDatabaseNode();
+ 						Debug.console("Node", node);
+ 						local actor = ActorManager.getActorFromCT(node);
+ 						Debug.console("Actor:", actor);
+ 						if actor.sType == "pc" then
+ 							local id = actor.sCreatureNode;
+ 							local pc = DB.getValue(node, id);
+ 							Debug.console("PC:", pc);
+ 						end
+						Debug.console("3:", ActorManager.getActor("pc", window.getDatabaseNode()));
+ 					end
+				</script>
+ 			</buttoncontrol>
+			<buttoncontrol name="dec_hp">
+				<anchored to="hps" width="11" height="12" position="insidebottomright" offset="-3,0" />
+				<state icon="field_modifier_minus" />
+ 				<script>
+				</script>
+ 			</buttoncontrol>
+			
 
 			<number_ct_crosslink name="speed">
 				<anchored to="rightanchor" width="40" height="20">

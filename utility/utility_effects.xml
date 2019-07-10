@@ -87,8 +87,9 @@
 				</anchored>
 				<gmeditonly />
 				<parameters>
-					<labelsres>effect_label_durunitsec+|effect_label_durunitsec|effect_label_durunitmin|effect_label_durunithr|effect_label_durunitday</labelsres>
-					<values>sec+|sec|min|hr|day</values>
+<!-- Added support for TURN based effects (e.g. No Active Defense, All Out Defense) that last until your next turn -->			
+					<labelsres>effect_label_durunitsec+|effect_label_durunitsec|effect_label_durunitturn|effect_label_durunitmin|effect_label_durunithr|effect_label_durunitday</labelsres>
+					<values>sec+|sec|turn|min|hr|day</values>
 				</parameters>
 				<script>
 					function onDragStart(button, x, y, draginfo)

@@ -41,6 +41,8 @@
 
 	<icon name="field_rollable" file="graphics/icons/field_rollable.png" />
 	<icon name="field_modifier" file="graphics/icons/field_modifier.png" />
+	<icon name="field_modifier_plus" file="graphics/icons/field_modifier_plus.png" />
+	<icon name="field_modifier_minus" file="graphics/icons/field_modifier_minus.png" />
 
 	<!-- Icons -->
 	<icon name="tool_mapscale_30" file="graphics/toolbar/tool_mapscale_30.png" />

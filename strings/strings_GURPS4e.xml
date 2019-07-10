@@ -319,6 +319,7 @@
 	<!-- Effects -->
 	<string name="effect_label_durunitsec+">SEC+</string>
 	<string name="effect_label_durunitsec">SEC</string>
+	<string name="effect_label_durunitturn">TURN</string>
 	<string name="effect_label_durunitmin">MIN</string>
 	<string name="effect_label_durunithr">HR</string>
 	<string name="effect_label_durunitday">DAY</string>
