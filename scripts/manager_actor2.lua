@@ -19,9 +19,11 @@ function getStatus(sNodeType, node)
 	if nCHP >= nHP then
 		sStatus = "Healthy";
 		nStatus = 0;
-  elseif nCHP > 0 and nCHP > nHP/3 then
-  -- Changed from 1/2 to 1/3 to help identify when character is "injured", below 1/2 of HP
+  elseif nCHP > nHP/2 then
     sStatus = "Good";
+    nStatus = 1;
+  elseif nCHP > nHP/3 then
+    sStatus = "Fair";
     nStatus = 1;
 	elseif nCHP > 0 then
 		sStatus = "Fair";
