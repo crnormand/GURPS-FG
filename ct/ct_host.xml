@@ -278,9 +278,37 @@
 							setValue(getValue() - draginfo.getNumberData());
 						end
 					end
+					
+					function update()
+						window.onFatigueChanged();
+					end
+					
 				</script>
 			</number_ct_crosslink>
-
+			
+			<buttoncontrol name="inc_fp">
+				<anchored to="fps" width="11" height="12" position="insidetopright" offset="-3,-1" />
+				<state icon="field_modifier_plus" />
+ 				<script>
+ 					function onButtonPress()
+  						local node = window.getDatabaseNode();
+ 						local fp = node.getChild("fps");
+ 						fp.setValue(fp.getValue() + 1);	
+					end
+				</script>
+ 			</buttoncontrol>
+			<buttoncontrol name="dec_fp">
+				<anchored to="fps" width="11" height="12" position="insidebottomright" offset="-3,0" />
+				<state icon="field_modifier_minus" />
+ 				<script>
+ 					function onButtonPress()
+  						local node = window.getDatabaseNode();
+ 						local fp = node.getChild("fps");
+ 						fp.setValue(fp.getValue() - 1);	
+					end
+				</script>
+ 			</buttoncontrol>
+			
 			<number_ct_crosslink name="hps">
 				<anchored to="rightanchor" width="40" height="20">
 					<top />
@@ -307,27 +335,24 @@
 				<state icon="field_modifier_plus" />
  				<script>
  					function onButtonPress()
- 						local node = window.getDatabaseNode();
- 						Debug.console("Node", node);
- 						local actor = ActorManager.getActorFromCT(node);
- 						Debug.console("Actor:", actor);
- 						if actor.sType == "pc" then
- 							local id = actor.sCreatureNode;
- 							local pc = DB.getValue(node, id);
- 							Debug.console("PC:", pc);
- 						end
-						Debug.console("3:", ActorManager.getActor("pc", window.getDatabaseNode()));
- 					end
+  						local node = window.getDatabaseNode();
+ 						local hp = node.getChild("hps");
+ 						hp.setValue(hp.getValue() + 1);	
+					end
 				</script>
  			</buttoncontrol>
 			<buttoncontrol name="dec_hp">
 				<anchored to="hps" width="11" height="12" position="insidebottomright" offset="-3,0" />
 				<state icon="field_modifier_minus" />
  				<script>
+ 					function onButtonPress()
+  						local node = window.getDatabaseNode();
+ 						local hp = node.getChild("hps");
+ 						hp.setValue(hp.getValue() - 1);	
+					end
 				</script>
  			</buttoncontrol>
 			
-
 			<number_ct_crosslink name="speed">
 				<anchored to="rightanchor" width="40" height="20">
 					<top />
@@ -476,6 +501,11 @@
 				<description textres="ct_label_fatiguepoints" />
 				<hideonvalue value="0" />
 				<default>0</default>
+				<script>
+					function onValueChanged()
+						window.onFatigueChanged();
+					end
+				</script>
 			</number_ct_ability>
 			<label_ct_ability name="label_fatiguepoints">
 				<anchored to="fatiguepoints" />

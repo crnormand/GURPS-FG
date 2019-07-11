@@ -23,4 +23,9 @@
 		<middle rect="0,2,100,14"/>
 	</framedef>
 
+	<framedef name="yellowbackground">
+		<bitmap file="graphics/frames/yellow_background.png"/>
+		<offset>2,2,2,2</offset>
+	</framedef>
+
 </root>

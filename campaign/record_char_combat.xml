@@ -36,7 +36,6 @@
  				<script>
  					function onButtonPress()
 						local node = window.getDatabaseNode()
-						Debug.console("node", node)
 						DB.setValue(node, "attributes.hps", "number", DB.getValue(node, "attributes.hps", 0) + 1)
 					end
 				</script>

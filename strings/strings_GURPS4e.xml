@@ -319,6 +319,7 @@
 	<!-- Effects -->
 	<string name="effect_label_durunitsec+">SEC+</string>
 	<string name="effect_label_durunitsec">SEC</string>
+<!-- Added support for TURN based effects (e.g. No Active Defense, All Out Defense) that last until your next turn -->			
 	<string name="effect_label_durunitturn">TURN</string>
 	<string name="effect_label_durunitmin">MIN</string>
 	<string name="effect_label_durunithr">HR</string>

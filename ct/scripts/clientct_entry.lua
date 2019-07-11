@@ -92,7 +92,7 @@ function onTypeChanged()
 end
 
 function onHealthChanged()
-  local sColor = ActorManager2.getStatusColor("ct", getDatabaseNode());
+  local sColor, sStatus, nStatus = ActorManager2.getStatusColor("ct", getDatabaseNode());
 
   hps.setColor(sColor);
   status.setColor(sColor);

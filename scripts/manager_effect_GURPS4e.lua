@@ -28,14 +28,14 @@ function onEffectAddStart(rEffect)
   elseif rEffect.sUnits == "sec+" then        
     rEffect.nStatus = 1;    
   end
-  
 end
 
 function onEffectStartTurn(nodeEffect)
   return true;
 end
 function onEffectEndTurn(nodeEffect)
-  return true;
+--  If this returns true, it may skip the actor end processing, which will stop all time effects from expiring
+--  return true;
 end
 
 function onEffectActorStartTurn(nodeActor, nodeEffect)
@@ -56,9 +56,15 @@ function onEffectActorStartTurn(nodeActor, nodeEffect)
 end
 
 function onEffectActorEndTurn(nodeActor, nodeEffect)
+  Debug.console("actor end", nodeActor, nodeEffect);
   local nDuration = DB.getValue(nodeEffect, "duration", 0);
   local sUnits = DB.getValue(nodeEffect, "units", "");
   local nStatus = DB.getValue(nodeEffect, "status", 0);
+  
+  if sUnits == "turn" then 
+    -- Only process a "turn" based eeffect at the start of a turn
+    return
+  end
 
   -- Convert minutes to seconds
   if sUnits == "min" then
@@ -72,8 +78,7 @@ function onEffectActorEndTurn(nodeActor, nodeEffect)
   elseif sUnits == "sec" and nStatus == 1 then
     nDuration = nDuration - 1;
   end
-
-  if nDuration <= 0 and sUnits ~= "" and sUnits ~= "sec+" and sUnits ~= "turn" then
+  if nDuration <= 0 and sUnits ~= "" and sUnits ~= "sec+"  then
     EffectManager.expireEffect(nodeActor, nodeEffect, 0);
   else
     DB.setValue(nodeEffect, "status", "number", 1);

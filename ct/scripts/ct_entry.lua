@@ -20,6 +20,7 @@ function onInit()
 	-- Update the displays
 	onFactionChanged();
 	onHealthChanged();
+	onFatigueChanged();
 	
 	-- Register the deletion menu item for the host
 	registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
@@ -115,6 +116,10 @@ function onHealthChanged()
 
   hps.setColor(sColor);
   status.setValue(sStatus);
+end
+
+function onFatigueChanged()
+  fps.setColor(ActorManager2.getFatigueColor("ct", getDatabaseNode()));
 end
 
 function onSizeModifierChanged()

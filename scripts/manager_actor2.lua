@@ -19,7 +19,8 @@ function getStatus(sNodeType, node)
 	if nCHP >= nHP then
 		sStatus = "Healthy";
 		nStatus = 0;
-  elseif nCHP > 0 and nCHP > nHP/2 then
+  elseif nCHP > 0 and nCHP > nHP/3 then
+  -- Changed from 1/2 to 1/3 to help identify when character is "injured", below 1/2 of HP
     sStatus = "Good";
     nStatus = 1;
 	elseif nCHP > 0 then
@@ -56,6 +57,21 @@ function getStatusColor(sNodeType, node)
 	end
 
 	return sColor, sStatus, nStatus;
+end
+
+function getFatigueColor(sNodeType, node)
+  local rActor = ActorManager.getActor(sNodeType, node);
+  if not rActor then
+    return COLOR_HEALTH_UNWOUNDED;
+  end
+  local nFP = DB.getValue(node, "attributes.fatiguepoints", 0);
+  local nCFP = DB.getValue(node, "fps", 0);
+  if nCFP > nFP/3 then
+    return COLOR_HEALTH_UNWOUNDED;
+  elseif nCFP > 0 then
+    return COLOR_HEALTH_MOD_WOUNDS;
+  end
+  return COLOR_HEALTH_CRIT_WOUNDS;
 end
 
 function hasMeleeWeapons(node)
