@@ -17,4 +17,8 @@ function registerOptions()
 -- CoreRPG Options  
   OptionsManager.registerOption2("DDCL", false, "option_header_game", "option_label_DDCL", "option_entry_cycler", 
       { labels = "option_val_DDCL_gurps|option_val_DDCL_dfrpg|option_val_DDCL_sw", values = "desktopdecal_gurps|desktopdecal_dfrpg|desktopdecal_sw", baselabel = "option_val_off", baseval = "off", default = "off" });
+      
+  OptionsManager.registerOption2("INCDEC", true, "option_header_client", "option_label_INCDEC", "option_entry_cycler", 
+      { labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
+      
 end

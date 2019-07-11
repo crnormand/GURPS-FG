@@ -5,6 +5,24 @@
 
 <root>
 	<windowclass name="charsheet_main">
+		<script>
+			function onInit()
+				OptionsManager.registerCallback("INCDEC", updateIncDecButtons);
+				updateIncDecButtons();
+			end
+			
+			function onClose()
+				OptionsManager.unregisterCallback("INCDEC", updateIncDecButtons);
+			end
+			
+			function updateIncDecButtons()
+				local vis = OptionsManager.getOption("INCDEC") == "on";
+				inc_hp.setVisible(vis);
+				dec_hp.setVisible(vis);
+				inc_fp.setVisible(vis);
+				dec_fp.setVisible(vis);
+			end
+		</script>
 		<sheetdata>
 
 <!-- Character Details -->
@@ -242,6 +260,11 @@
 				<anchored to="hps" width="11" height="12" position="insidetopright" offset="-3,3" />
 				<state icon="field_modifier_plus" />
  				<script>
+  					function onInit()
+ 					    if OptionsManager.getOption("INCDEC") == "off" then
+ 					    	setVisible(false)
+ 					    end
+ 					end
  					function onButtonPress()
 						local node = window.getDatabaseNode()
 						DB.setValue(node, "attributes.hps", "number", DB.getValue(node, "attributes.hps", 0) + 1);
@@ -252,6 +275,11 @@
 				<anchored to="hps" width="11" height="12" position="insidebottomright" offset="-3,0" />
 				<state icon="field_modifier_minus" />
  				<script>
+ 					function onInit()
+ 					    if OptionsManager.getOption("INCDEC") == "off" then
+ 					    	setVisible(false)
+ 					    end
+ 					end
  					function onButtonPress()
 						local node = window.getDatabaseNode()
 						DB.setValue(node, "attributes.hps", "number", DB.getValue(node, "attributes.hps", 0) - 1);
@@ -272,6 +300,11 @@
 				<anchored to="fps" width="11" height="12" position="insidetopright" offset="-3,3" />
 				<state icon="field_modifier_plus" />
  				<script>
+					function onInit()
+ 					    if OptionsManager.getOption("INCDEC") == "off" then
+ 					    	setVisible(false);
+ 					    end
+ 					end
  					function onButtonPress()
 						local node = window.getDatabaseNode()
 						DB.setValue(node, "attributes.fps", "number", DB.getValue(node, "attributes.fps", 0) + 1);
@@ -282,6 +315,11 @@
 				<anchored to="fps" width="11" height="12" position="insidebottomright" offset="-3,0" />
 				<state icon="field_modifier_minus" />
  				<script>
+					function onInit()
+ 					    if OptionsManager.getOption("INCDEC") == "off" then
+ 					    	setVisible(false);
+ 					    end
+ 					end
  					function onButtonPress()
 						local node = window.getDatabaseNode()
 						DB.setValue(node, "attributes.fps", "number", DB.getValue(node, "attributes.fps", 0) - 1);

@@ -181,4 +181,12 @@
 		</list_text>
 	</template>
 	
+	<template name="number_ct_static_showzero">
+		<simplenumber>
+			<frame name="fieldlight" offset="7,5,7,5" />
+			<readonly />
+			<nodrag />
+		</simplenumber>
+	</template>
+	
 </root>

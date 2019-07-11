@@ -21,11 +21,30 @@ function onInit()
 	onFactionChanged();
 	onHealthChanged();
 	onFatigueChanged();
+  updateIncDecButtons();
+        
+  -- Register for Option change
+  OptionsManager.registerCallback("INCDEC", updateIncDecButtons);
+        
+	
 	
 	-- Register the deletion menu item for the host
 	registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
 	registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
 end
+
+function onClose()
+  OptionsManager.unregisterCallback("INCDEC", updateIncDecButtons);
+end
+    
+function updateIncDecButtons()
+  local vis = OptionsManager.getOption("INCDEC") == "on";
+  inc_hp.setVisible(vis);
+  dec_hp.setVisible(vis);
+  inc_fp.setVisible(vis);
+  dec_fp.setVisible(vis);
+end
+
 
 function updateDisplay()
 	local sFaction = friendfoe.getStringValue();

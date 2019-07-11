@@ -142,13 +142,13 @@
 				<static />
 				<invisible />
 			</simplestring>
-			<number_ct_static name="fps">
+			<number_ct_static_showzero name="fps">
 				<anchored to="healthbase" width="40" height="20">
 					<top />
 					<right />
 				</anchored>
-			</number_ct_static>
-			<number_ct_static name="hps">
+			</number_ct_static_showzero>
+			<number_ct_static_showzero name="hps">
 				<anchored to="fps" width="40" height="20">
 					<top />
 					<right anchor="left" offset="-10" />
@@ -158,7 +158,7 @@
 						window.onHealthChanged();
 					end
 				</script>
-			</number_ct_static>
+			</number_ct_static_showzero>
 			<number_ct_static name="speed">
 				<anchored to="rightanchor" width="40" height="20">
 					<top />

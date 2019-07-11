@@ -11,6 +11,8 @@
 	<!-- Options -->
 	<string name="option_val_DDCL_gurps">GURPS</string>
 	<string name="option_val_DDCL_dfrpg">DFRPG</string>
+	<string name="option_label_INCDEC">Show +/- buttons for Current HP &amp; FP</string>
+	
 
 	<!-- Combat Tracker -->
 	<string name="ct_label_speed">Speed</string>

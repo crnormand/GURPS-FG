@@ -428,6 +428,11 @@
 					<right anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<tabtarget prev="reach" />
+				<script>
+					function onInit()
+						setTooltipText(getValue());
+					end
+				</script>
 			</string_chardefensefield>
 			<string_charfield name="reach">
 				<anchored to="rightanchor" width="40" height="20">
@@ -435,6 +440,11 @@
 					<right anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<tabtarget next="parry" prev="damage" />
+				<script>
+					function onInit()
+						setTooltipText(getValue());
+					end
+				</script>
 			</string_charfield>
 			<string_charfield name="damage">
 				<rollable_damage />
@@ -443,6 +453,11 @@
 					<right anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<tabtarget next="reach" prev="name" />
+				<script>
+					function onInit()
+						setTooltipText(getValue());
+					end
+				</script>
 			</string_charfield>
 			<number_charfield name="level">
 				<rollable_melee />

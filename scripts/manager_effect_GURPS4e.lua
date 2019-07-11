@@ -56,7 +56,6 @@ function onEffectActorStartTurn(nodeActor, nodeEffect)
 end
 
 function onEffectActorEndTurn(nodeActor, nodeEffect)
-  Debug.console("actor end", nodeActor, nodeEffect);
   local nDuration = DB.getValue(nodeEffect, "duration", 0);
   local sUnits = DB.getValue(nodeEffect, "units", "");
   local nStatus = DB.getValue(nodeEffect, "status", 0);
