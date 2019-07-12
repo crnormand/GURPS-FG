@@ -72,8 +72,11 @@ function getFatigueColor(sNodeType, node)
     return COLOR_HEALTH_UNWOUNDED;
   elseif nCFP > 0 then
     return COLOR_HEALTH_MOD_WOUNDS;
+  elseif nCFP > -nFP then
+    return COLOR_HEALTH_HVY_WOUNDS
+  else
+    return COLOR_HEALTH_CRIT_WOUNDS;
   end
-  return COLOR_HEALTH_CRIT_WOUNDS;
 end
 
 function hasMeleeWeapons(node)
