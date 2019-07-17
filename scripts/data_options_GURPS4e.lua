@@ -21,4 +21,7 @@ function registerOptions()
   OptionsManager.registerOption2("INCDEC", true, "option_header_client", "option_label_INCDEC", "option_entry_cycler", 
       { labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
       
+  OptionsManager.registerOption2("HALFFACINGS", false, "option_header_combat", "option_label_HALFFACINGS", "option_entry_cycler", 
+      { labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
+      
 end

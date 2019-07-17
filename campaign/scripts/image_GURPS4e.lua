@@ -4,12 +4,35 @@
 --
 
 function onInit()
+  -- Register for Option change
+  OptionsManager.registerCallback("HALFFACINGS", updateFacings);
+
   if User.isHost() then
     setGridToolType("hex");
-    setTokenOrientationCount(12);
   end
+  updateFacings();
   onCursorModeChanged();
   onGridStateChanged(getGridType());
+end
+
+function onClose()
+  OptionsManager.unregisterCallback("HALFFACINGS", updateFacings);
+end
+
+function updateFacings()
+  if User.isHost() then
+    local sGridType = getGridType();
+    if not sGridType == "hexcolumn" and not sGridType == "hexrow" then
+      setTokenOrientationCount(8)
+      return
+    end
+  
+    local nFacings = 6;
+    if OptionsManager.isOption("HALFFACINGS", "on") then
+      nFacings = 12;
+    end
+    setTokenOrientationCount(nFacings)
+  end
 end
 
 function onCursorModeChanged(sTool)
@@ -17,13 +40,7 @@ function onCursorModeChanged(sTool)
 end
 
 function onGridStateChanged(sGridType)
-  if User.isHost() then
-    if sGridType == "hexcolumn" or sGridType == "hexrow" then
-      setTokenOrientationCount(12)
-    else
-      setTokenOrientationCount(8)
-    end
-  end
+  updateFacings();
   super.onGridStateChanged();
 end
 

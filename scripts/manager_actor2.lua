@@ -15,15 +15,13 @@ function getStatus(sNodeType, node)
 	local nHP = DB.getValue(node, "attributes.hitpoints", 0);
   local nCHP = DB.getValue(node, "hps", 0);
 
-	local sStatus, nStatus;
+	local sStatus, nStatus, bOneThird;
+	bOneThird = nCHP < nHP/3;
 	if nCHP >= nHP then
 		sStatus = "Healthy";
 		nStatus = 0;
   elseif nCHP > nHP/2 then
     sStatus = "Good";
-    nStatus = 1;
-  elseif nCHP > nHP/3 then
-    sStatus = "Fair";
     nStatus = 1;
 	elseif nCHP > 0 then
 		sStatus = "Fair";
@@ -36,13 +34,13 @@ function getStatus(sNodeType, node)
     nStatus = 4;
 	end
 
-	return sStatus, nStatus, rActor;
+	return sStatus, nStatus, rActor, bOneThird;
 end
 
 function getStatusColor(sNodeType, node)
-	local sStatus, nStatus, rActor = getStatus(sNodeType, node);
+	local sStatus, nStatus, rActor, bOneThird = getStatus(sNodeType, node);
 	if not rActor then
-		return COLOR_HEALTH_UNWOUNDED, nStatus, sStatus;
+		return COLOR_HEALTH_UNWOUNDED, nStatus, sStatus, false;
 	end
 
 	local sColor;
@@ -58,24 +56,24 @@ function getStatusColor(sNodeType, node)
     sColor = COLOR_HEALTH_CRIT_WOUNDS;
 	end
 
-	return sColor, sStatus, nStatus;
+	return sColor, sStatus, nStatus, bOneThird;
 end
 
 function getFatigueColor(sNodeType, node)
   local rActor = ActorManager.getActor(sNodeType, node);
   if not rActor then
-    return COLOR_HEALTH_UNWOUNDED;
+    return COLOR_HEALTH_UNWOUNDED, false;
   end
   local nFP = DB.getValue(node, "attributes.fatiguepoints", 0);
   local nCFP = DB.getValue(node, "fps", 0);
   if nCFP > nFP/3 then
-    return COLOR_HEALTH_UNWOUNDED;
+    return COLOR_HEALTH_UNWOUNDED, false;
   elseif nCFP > 0 then
-    return COLOR_HEALTH_MOD_WOUNDS;
+    return COLOR_HEALTH_MOD_WOUNDS, true;
   elseif nCFP > -nFP then
-    return COLOR_HEALTH_HVY_WOUNDS
+    return COLOR_HEALTH_HVY_WOUNDS, true
   else
-    return COLOR_HEALTH_CRIT_WOUNDS;
+    return COLOR_HEALTH_CRIT_WOUNDS, true;
   end
 end
 

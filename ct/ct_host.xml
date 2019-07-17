@@ -374,7 +374,7 @@
 				</anchored>
 				<tabtarget next="initresult" />
 			</string_ctname>
-			
+						
 			<!-- Targeting subsection -->
 			<icon_ctsection name="targetingicon">
 				<icon>button_section_targeting_down</icon>
@@ -715,10 +715,6 @@
 				</anchored>
 			</frame_ctsub>
 
-			<!-- Quick labels -->
-			<string_ctentry_targets name="target_summary" />
-			<string_ctentry_effects name="effect_summary" />
-
 			<genericcontrol name="spacer">
 				<anchored width="0" height="9">
 					<top parent="name" anchor="bottom" relation="relative" />
@@ -726,6 +722,22 @@
 				</anchored>
 			</genericcontrol>
 
+			<!-- Quick labels -->
+  			<string_ctentry_targets name="target_summary">
+ 				<anchored>
+					<top parent="spacer" anchor="bottom" relation="relative" />
+					<left offset="68" />
+					<right offset="-10" />
+				</anchored>
+			</string_ctentry_targets>
+ 			<string_ctentry_effects name="effect_summary">
+ 			 	<anchored>
+					<top parent="spacer" anchor="bottom" relation="relative" />
+					<left offset="68" />
+					<right offset="-10" />
+				</anchored>
+ 			</string_ctentry_effects>			
+ 			
 			<genericcontrol name="active_spacer_bottom">
 				<anchored width="0" height="5">
 					<top parent="name" anchor="bottom" relation="relative" />
@@ -733,6 +745,7 @@
 				</anchored>
 				<invisible />
 			</genericcontrol>
+
 		</sheetdata>
 	</windowclass>
 

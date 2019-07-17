@@ -151,11 +151,11 @@
 				<tabtarget prev="locations" next="dr" />
 				<script>
 					function onDragStart(button, x, y, draginfo)
-						return actionDrag(draginfo, window.name.getValue());
+						return actionDrag(draginfo, window.locations.getValue());
 					end
 
 					function onDoubleClick(x, y)
-						return action(window.name.getValue());
+						return action(window.locations.getValue());
 					end
 				</script>
 			</number_charmodfield>

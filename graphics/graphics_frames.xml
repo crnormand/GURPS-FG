@@ -25,7 +25,12 @@
 
 	<framedef name="yellowbackground">
 		<bitmap file="graphics/frames/yellow_background.png"/>
-		<offset>2,2,2,2</offset>
+		<offset>7,5,7,5</offset>
+	</framedef>
+
+	<framedef name="fieldyellow">
+		<bitmap file="graphics/frames/fieldyellow.png"/>
+		<offset>12,12,12,12</offset>
 	</framedef>
 
 </root>

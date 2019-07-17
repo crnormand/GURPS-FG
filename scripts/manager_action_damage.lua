@@ -73,11 +73,100 @@ function onDamage(rSource, rTarget, rRoll)
   end
 end
 
+-- Necessary because Lau's floor function always moves in the negative.
+function tointeger(x)
+    num = tonumber(x)
+    return num < 0 and math.ceil( num ) or math.floor( num )
+end
+
 function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal)
   -- Get health fields
   local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
   if sTargetType ~= "pc" and sTargetType ~= "ct" then
     return;
+  end
+  
+  local nMultiplier = 1;
+  local sDamageType;
+  if string.find(sDamage, "cr]$") then
+    sDamageType = "Crushing";
+  elseif string.find(sDamage, "burn]$") then
+    sDamageType = "Burning";
+  elseif string.find(sDamage, "cor]$") then
+    sDamageType = "Corrosion";
+  elseif string.find(sDamage, "fat]$") then
+    sDamageType = "Fatigue";
+  elseif string.find(sDamage, "tox]$") then
+    sDamageType = "Toxic";
+  elseif string.find(sDamage, "cut]$") then
+    nMultiplier = 1.5;
+    sDamageType = "Cutting";
+  elseif string.find(sDamage, "imp]$") then
+    nMultiplier = 2;
+    sDamageType = "Impaling";
+  elseif string.find(sDamage, "pi]$") then
+    nMultiplier = 1;
+    sDamageType = "Piercing";
+  elseif string.find(sDamage, "pi%-]$") then
+    nMultiplier = 0.5;
+    sDamageType = "Small Piercing";
+  elseif string.find(sDamage, "pi%+]$") then
+    nMultiplier = 1.5;
+    sDamageType = "Large Piercing";
+  elseif string.find(sDamage, "pi%+%+]$") then
+    nMultiplier = 2;
+    sDamageType = "Huge Piercing";
+  end
+  
+  
+  if sDamageType then
+    local sIndent = "    ";
+    local nDR = tonumber(DB.getValue(nodeTarget, "combat.dr", 0));
+    local nOrigDR = nDR;
+    local i, j = string.find(sDamage, "%(%d*%.?%d*%)");
+    local nArmorDivisor = 1;
+    local sNote1 = "";
+    local sNote2 = "";
+    local sNote3 = "";
+    local sNote4 = "";
+    if i then
+      local sAdjustment = "reduced";
+      nArmorDivisor = tonumber(string.sub(sDamage, i+1, j-1));
+      nDR = tointeger(nDR / nArmorDivisor);    -- B378
+      if nArmorDivisor < 1 then
+        sAdjustment = "increased";
+        if nDR == 0 then
+          nDR = 1;
+          sNote3 = "\n" .. sIndent .. "  (minimum of DR [1] for armor divisors less than 1 [B379])"
+        end
+      end
+      sNote2 = "\n\n" .. sIndent ..  "* The original DR [" .. nOrigDR .. "] was " .. sAdjustment .. " to "..nDR.." by the armor divisor [" .. nArmorDivisor .. "].";
+      sNote1 = "*";
+    end
+      
+    local sMesg = "Do you wish to apply the damage roll \"" .. sDamage .. "  " .. nTotal .. "\" to the Torso using the Damage and Injury rules [B377-379]?\n";
+    local nResult = tonumber((nTotal - nDR) * nMultiplier);
+    if nResult < 1 and nResult > 0 then  -- Min 1pt damage for any fraction that makes it through DR [B379]
+      nResult = 1;
+      sNote4 = "*";
+      sNote2 = "\n\n" .. sIndent ..  "* The minimum damage is 1 HP for any attack that penetrates DR.  [B379]" .. sNote2;
+    end
+    if nResult < 0 then
+      nResult = 0;
+    end
+    nResult = tointeger(nResult);
+    sMesg = sMesg .. "\n\nYes, apply " .. nResult .. " damage" .. sNote4 .. ".\n\n";
+    sMesg = sMesg .. sIndent .. "( Damage Roll [" .. nTotal .. "] - Torso DR [" .. nDR .. "]" .. sNote1 .." )  X  modifier for " .. sDamageType .. " [" .. nMultiplier .. "]";
+    sMesg = sMesg .. sNote2 .. sNote3;
+    sMesg = sMesg .. "\n\nNo, just apply " .. nTotal .. " damage.";
+    sMesg = sMesg .. "\n\nCancel, do not apply any damage.";
+  
+    local ans = Interface.dialogMessage(sMesg, "Apply Damage", "yesnocancel");
+    if ans == "cancel" then
+      return;
+    elseif ans == "yes" then
+      nTotal = nResult;
+    end
   end
 
   local nHP, nCHP;

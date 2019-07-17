@@ -25,8 +25,6 @@ function onInit()
         
   -- Register for Option change
   OptionsManager.registerCallback("INCDEC", updateIncDecButtons);
-        
-	
 	
 	-- Register the deletion menu item for the host
 	registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
@@ -131,14 +129,25 @@ function onLinkChanged()
 end
 
 function onHealthChanged()
-  local sColor, sStatus, nStatus = ActorManager2.getStatusColor("ct", getDatabaseNode());
+  local sColor, sStatus, nStatus, bOneThird = ActorManager2.getStatusColor("ct", getDatabaseNode());
 
   hps.setColor(sColor);
   status.setValue(sStatus);
+  if (bOneThird) then
+    hps.setFrame("fieldyellow", 7, 5, 7, 5);
+  else
+    hps.setFrame("fielddark", 7, 5, 7, 5);
+  end
 end
 
 function onFatigueChanged()
-  fps.setColor(ActorManager2.getFatigueColor("ct", getDatabaseNode()));
+  local sColor, bOneThird = ActorManager2.getFatigueColor("ct", getDatabaseNode());
+  fps.setColor(sColor);
+    if (bOneThird) then
+    fps.setFrame("fieldyellow", 7, 5, 7, 5);
+  else
+    fps.setFrame("fielddark", 7, 5, 7, 5);
+  end
 end
 
 function onSizeModifierChanged()

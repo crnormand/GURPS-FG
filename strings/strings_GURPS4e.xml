@@ -12,7 +12,7 @@
 	<string name="option_val_DDCL_gurps">GURPS</string>
 	<string name="option_val_DDCL_dfrpg">DFRPG</string>
 	<string name="option_label_INCDEC">Show +/- buttons for Current HP &amp; FP</string>
-	
+	<string name="option_label_HALFFACINGS">Use 1/2 Facings on Hex grids (12 instead of 6)</string>
 
 	<!-- Combat Tracker -->
 	<string name="ct_label_speed">Speed</string>
