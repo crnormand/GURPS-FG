@@ -568,5 +568,12 @@
 			<newfocus>name</newfocus>
 		</list_text>
 	</template>
-
+	
+	<template name="notes_actions">
+		<buttoncontrol>
+				<anchored to="text" position="insidebottomleft">
+					<right parent="text" anchor="right" relation="relative" />
+				</anchored>
+		</buttoncontrol>
+	</template>
 </root>

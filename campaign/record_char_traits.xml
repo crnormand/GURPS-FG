@@ -214,6 +214,7 @@
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
 				</anchored>
 				<tabtarget next="points" />
+				<script file="campaign/scripts/windowhovercheck.lua" />
 			</string_textlistitem>
 		</sheetdata>
 	</windowclass>

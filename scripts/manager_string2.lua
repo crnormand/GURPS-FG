@@ -24,7 +24,10 @@ function convertStringToDice(s)
     
     if nDieCount then
       local sDie = string.format("d%d", (tonumber(nDice) or nDefaultDice));
-      
+
+      if nDieCount == "" then  -- For the odd case where dmg is defined as "d cut"
+        nDieCount = 1;
+      end
       for i = 1, nDieCount do
         table.insert(aDice, sDie);
       end

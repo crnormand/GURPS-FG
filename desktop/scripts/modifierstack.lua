@@ -127,7 +127,7 @@ function getDescription(forcebonus)
 			table.insert(aMods, string.format("%+d", freeadjustment));
 		end
 		
-		s = table.concat(aMods, ", ");
+    s = table.concat(aMods, ", ");
 	end
 	
 	return s;
@@ -246,6 +246,37 @@ function getTargeting()
 	return false;
 end
 
+function applyModifiers(rSource, rTarget, rRoll)
+  local sActorType, nodeActor = ActorManager.getTypeAndNode(rSource);
+  local sDesc = getDescription(#(rRoll.aDice) > 0);
+  for k, v in string.gmatch(sDesc, "%[Cost 1 ?[fF][pP]%]") do
+    if sActorType == "pc" then
+      local nFP = DB.getValue(nodeActor, "attributes.fps", 0);
+      DB.setValue(nodeActor, "attributes.fps", "number", nFP - 1);
+    else
+      local nFP = DB.getValue(nodeActor, "fps", 0);
+      DB.setValue(nodeActor, "fps", "number", nFP -1);
+    end
+    
+    local msg = {};
+    msg.icon = "dot_blue";
+    msg.secret = (sActorType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
+    sDesc = string.gsub(sDesc, "%[Cost 1 ?[fF][pP]%]", "");
+    msg.text = DB.getValue(nodeActor, "name", "Someone") .. " spent 1 FP for " .. sDesc;
+    Comm.deliverChatMessage(msg);
+  end
+  
+end
+
 function onInit()
 	Interface.onHotkeyActivated = checkHotkey;
+	for i,line in ipairs(GameSystem.targetactions) do
+	   ActionsManager.registerModHandler(line, applyModifiers);   -- rSource, rTarget, rRoll
+	end
+end
+
+function onClose()
+  for i,line in ipairs(GameSystem.targetactions) do
+     ActionsManager.unregisterModHandler(line, applyModifiers);   -- rSource, rTarget, rRoll
+  end
 end

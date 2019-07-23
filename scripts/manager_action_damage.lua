@@ -88,50 +88,57 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal)
   
   local nMultiplier = 1;
   local sDamageType;
-  if string.find(sDamage, "cr]$") then
-    sDamageType = "Crushing";
-  elseif string.find(sDamage, "burn]$") then
-    sDamageType = "Burning";
-  elseif string.find(sDamage, "cor]$") then
-    sDamageType = "Corrosion";
-  elseif string.find(sDamage, "fat]$") then
-    sDamageType = "Fatigue";
-  elseif string.find(sDamage, "tox]$") then
-    sDamageType = "Toxic";
-  elseif string.find(sDamage, "cut]$") then
-    nMultiplier = 1.5;
-    sDamageType = "Cutting";
-  elseif string.find(sDamage, "imp]$") then
-    nMultiplier = 2;
-    sDamageType = "Impaling";
-  elseif string.find(sDamage, "pi]$") then
-    nMultiplier = 1;
-    sDamageType = "Piercing";
-  elseif string.find(sDamage, "pi%-]$") then
-    nMultiplier = 0.5;
-    sDamageType = "Small Piercing";
-  elseif string.find(sDamage, "pi%+]$") then
-    nMultiplier = 1.5;
-    sDamageType = "Large Piercing";
-  elseif string.find(sDamage, "pi%+%+]$") then
-    nMultiplier = 2;
-    sDamageType = "Huge Piercing";
+  local sDmgDesc;
+  local sChatDesc;
+  -- find the damage description, ex: [2d(2) pi]
+  local i, j = string.find(sDamage, "%[.*d.*%]");   
+  if i then
+    sDmgDesc = string.sub(sDamage, i+1, j-1);  -- remove [] 
+    if string.find(sDmgDesc, " cr$") then
+      sDamageType = "Crushing";
+    elseif string.find(sDmgDesc, " burn$") then
+      sDamageType = "Burning";
+    elseif string.find(sDmgDesc, " cor$") then
+      sDamageType = "Corrosion";
+    elseif string.find(sDmgDesc, " fat$") then
+      sDamageType = "Fatigue";
+    elseif string.find(sDmgDesc, " tox$") then
+      sDamageType = "Toxic";
+    elseif string.find(sDmgDesc, " cut$") then
+      nMultiplier = 1.5;
+      sDamageType = "Cutting";
+    elseif string.find(sDmgDesc, " imp$") then
+      nMultiplier = 2;
+      sDamageType = "Impaling";
+    elseif string.find(sDmgDesc, " pi$") then
+      nMultiplier = 1;
+      sDamageType = "Piercing";
+    elseif string.find(sDmgDesc, " pi%-$") then
+      nMultiplier = 0.5;
+      sDamageType = "Small Piercing";
+    elseif string.find(sDmgDesc, " pi%+$") then
+      nMultiplier = 1.5;
+      sDamageType = "Large Piercing";
+    elseif string.find(sDmgDesc, " pi%+%+$") then
+      nMultiplier = 2;
+      sDamageType = "Huge Piercing";
+    end
   end
   
   
+  local sIndent = "    ";
+  local sNote1 = "";
+  local sNote2 = "";
+  local sNote3 = "";
+  local sNote4 = "";
   if sDamageType then
-    local sIndent = "    ";
     local nDR = tonumber(DB.getValue(nodeTarget, "combat.dr", 0));
     local nOrigDR = nDR;
-    local i, j = string.find(sDamage, "%(%d*%.?%d*%)");
     local nArmorDivisor = 1;
-    local sNote1 = "";
-    local sNote2 = "";
-    local sNote3 = "";
-    local sNote4 = "";
+    i, j = string.find(sDmgDesc, "%(%d*%.?%d*%)"); -- look for armor divisor
     if i then
       local sAdjustment = "reduced";
-      nArmorDivisor = tonumber(string.sub(sDamage, i+1, j-1));
+      nArmorDivisor = tonumber(string.sub(sDmgDesc, i+1, j-1));
       nDR = tointeger(nDR / nArmorDivisor);    -- B378
       if nArmorDivisor < 1 then
         sAdjustment = "increased";
@@ -156,8 +163,9 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal)
     end
     nResult = tointeger(nResult);
     sMesg = sMesg .. "\n\nYes, apply " .. nResult .. " damage" .. sNote4 .. ".\n\n";
-    sMesg = sMesg .. sIndent .. "( Damage Roll [" .. nTotal .. "] - Torso DR [" .. nDR .. "]" .. sNote1 .." )  X  modifier for " .. sDamageType .. " [" .. nMultiplier .. "]";
-    sMesg = sMesg .. sNote2 .. sNote3;
+    sChatDesc = "( Damage Roll [" .. nTotal .. "] - Torso DR [" .. nDR .. "]" .. sNote1 .." )  X  modifier for " .. sDamageType .. " [" .. nMultiplier .. "]" .. sNote2 .. sNote3;
+    sMesg = sMesg .. sIndent .. sChatDesc;
+--    sMesg = sMesg .. sNote2 .. sNote3;
     sMesg = sMesg .. "\n\nNo, just apply " .. nTotal .. " damage.";
     sMesg = sMesg .. "\n\nCancel, do not apply any damage.";
   
@@ -179,6 +187,20 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal)
     nCHP = DB.getValue(nodeTarget, "hps", 0) - nTotal;
     DB.setValue(nodeTarget, "hps", "number", nCHP);
   end
+  if nTotal > 0 then
+    local s = "";
+    if nTotal > 1 then 
+      s = "s";
+    end
+    local msg = {};
+    msg.icon = "dot_red";
+    msg.secret = (sTargetType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
+    msg.text = DB.getValue(nodeTarget, "name", "Someone") .. " took " .. nTotal .. " point" .. s .. " of damage" .. sNote4 .. "!";
+    if sChatDesc then
+      msg.text= msg.text .. "\n\n" .. sChatDesc;
+    end
+    Comm.deliverChatMessage(msg);
+  end
 end
 
 function parseDamage(s)
@@ -198,6 +220,9 @@ function parseDamage(s)
     if nDieCount then
       local sDie = string.format("d%d", (tonumber(nDice) or DICE_DEFAULT));
       
+      if nDieCount == "" then  -- For the odd case where dmg is defined as "d cut"
+        nDieCount = 1;
+      end
       for i = 1, nDieCount do
         table.insert(aDice, sDie);
       end

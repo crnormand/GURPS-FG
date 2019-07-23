@@ -190,6 +190,7 @@
 				</anchored>
 				<nodrag />
 				<tabtarget next="level" />
+				<script file="campaign/scripts/windowhovercheck.lua" />
 			</string_textlistitem>
 
 

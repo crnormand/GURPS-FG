@@ -102,6 +102,7 @@
 	<script name="ActionDefense" file="scripts/manager_action_defense.lua" />
 	<script name="ActionDamage" file="scripts/manager_action_damage.lua" />
 	<script name="ActionReaction" file="scripts/manager_action_reaction.lua" />
+	<script name="ActionParser" file="scripts/manager_action_parser.lua" />
 
 	<script name="ModifierStack" file="desktop/scripts/modifierstack.lua" />
 

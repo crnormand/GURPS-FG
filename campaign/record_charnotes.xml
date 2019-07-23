@@ -47,7 +47,9 @@
 				<multilinespacing>16</multilinespacing>
 				<font>reference-r</font>
 				<selectioncolor>#FFD296</selectioncolor>
+				<script file="campaign/scripts/noteshovercheck.lua" />
 			</ft_record>
+			
 			<scrollbar>
 				<anchored to="text" />
 				<target>text</target>
