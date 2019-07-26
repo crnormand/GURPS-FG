@@ -43,13 +43,13 @@
 			</stringfield>
 			
 			<ft_record name="text">
-				<bounds>25,85,-25,-15</bounds>
+				<bounds>25,60,-25,-15</bounds>
 				<multilinespacing>16</multilinespacing>
 				<font>reference-r</font>
 				<selectioncolor>#FFD296</selectioncolor>
-				<script file="campaign/scripts/noteshovercheck.lua" />
+<!-- 				<script file="campaign/scripts/noteshovercheck.lua" /> -->
 			</ft_record>
-			
+						
 			<scrollbar>
 				<anchored to="text" />
 				<target>text</target>

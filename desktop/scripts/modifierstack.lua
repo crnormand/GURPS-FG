@@ -113,12 +113,12 @@ end
 
 function getDescription(forcebonus)
 	local s = "";
+	local aMods = {};
 	
 	if not forcebonus and #slots == 1 and freeadjustment == 0 then
 		s = slots[1].description;
+		aMods[1] = s;
 	else
-		local aMods = {};
-		
 		for i = 1, #slots do
 			table.insert(aMods, string.format("%s %+d", slots[i].description, slots[i].number));
 		end
@@ -130,7 +130,7 @@ function getDescription(forcebonus)
     s = table.concat(aMods, ", ");
 	end
 	
-	return s;
+	return s, aMods;
 end
 
 function addSlot(description, number)
@@ -248,24 +248,25 @@ end
 
 function applyModifiers(rSource, rTarget, rRoll)
   local sActorType, nodeActor = ActorManager.getTypeAndNode(rSource);
-  local sDesc = getDescription(#(rRoll.aDice) > 0);
-  for k, v in string.gmatch(sDesc, "%[Cost 1 ?[fF][pP]%]") do
-    if sActorType == "pc" then
-      local nFP = DB.getValue(nodeActor, "attributes.fps", 0);
-      DB.setValue(nodeActor, "attributes.fps", "number", nFP - 1);
-    else
-      local nFP = DB.getValue(nodeActor, "fps", 0);
-      DB.setValue(nodeActor, "fps", "number", nFP -1);
+  local sDesc, aMods = getDescription(#(rRoll.aDice) > 0);
+  for _, sModDesc in pairs(aMods) do
+    for k, v in string.gmatch(sModDesc, "%[Cost 1 ?[fF][pP]%]") do
+      if sActorType == "pc" then
+        local nFP = DB.getValue(nodeActor, "attributes.fps", 0);
+        DB.setValue(nodeActor, "attributes.fps", "number", nFP - 1);
+      else
+        local nFP = DB.getValue(nodeActor, "fps", 0);
+        DB.setValue(nodeActor, "fps", "number", nFP -1);
+      end
+      
+      local msg = {};
+      msg.icon = "dot_blue";
+      msg.secret = (sActorType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
+      sModDesc = string.gsub(sModDesc, "%[Cost 1 ?[fF][pP]%]", "");
+      msg.text = DB.getValue(nodeActor, "name", "Someone") .. " spent 1 FP for " .. sModDesc;
+      Comm.deliverChatMessage(msg);
     end
-    
-    local msg = {};
-    msg.icon = "dot_blue";
-    msg.secret = (sActorType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
-    sDesc = string.gsub(sDesc, "%[Cost 1 ?[fF][pP]%]", "");
-    msg.text = DB.getValue(nodeActor, "name", "Someone") .. " spent 1 FP for " .. sDesc;
-    Comm.deliverChatMessage(msg);
   end
-  
 end
 
 function onInit()

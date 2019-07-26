@@ -62,3 +62,7 @@ function onDrop(x, y, draginfo)
 		return true;
 	end
 end
+
+function getMainNode()
+  return "npc", getDatabaseNode();  
+end

@@ -207,6 +207,7 @@
 					<right offset="-5" />
 				</anchored>
 				<multilinespacing>15</multilinespacing>
+				<script file="campaign/scripts/windowhovercheck.lua" />
 			</basicstring>
 			
 		</sheetdata>

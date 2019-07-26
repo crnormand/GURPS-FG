@@ -571,9 +571,9 @@
 	
 	<template name="notes_actions">
 		<buttoncontrol>
-				<anchored to="text" position="insidebottomleft">
-					<right parent="text" anchor="right" relation="relative" />
-				</anchored>
+			<anchored to="text" position="insidebottomleft" height="20" relation="relative" width="200">
+<!-- 				<right parent="text" anchor="right" relation="relative" /> -->
+			</anchored>
 		</buttoncontrol>
 	</template>
 </root>

@@ -31,21 +31,36 @@ function trim(s)
    return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
+function lastCrBefore(sText, index)
+  local last = 1;
+  while true do
+    local n = string.find(sText, "\n", last, true);
+    if not n then return last; end
+    if n > index then
+      return last;
+    end
+    last = n + 1;
+  end
+end
+
 function parseComponents(sText)
   local aAbilities = {};
+  local last = 1;
   for w in string.gmatch(sText, "%[.-%]") do
-    local i, j = string.find(sText, w, 1, true);
+    local i, j = string.find(sText, w, last, true);
     local action, target, mod = isAction(sText, i, j);
     if action then
       local ability = {};
       ability.action = action;
       ability.orig = string.sub(sText, i+1, j-1)
-      ability.desc = trim(string.sub(sText, 1, i-1));
+      local startOfLine = lastCrBefore(sText, i);
+      ability.desc = trim(string.sub(sText, startOfLine, i-1));
       ability.target = target;
       ability.mod = mod;
       ability.startindex = i;
       ability.endindex = j + 1;
       table.insert(aAbilities, ability);
+      last = j+1;
     end
   end
   return aAbilities;

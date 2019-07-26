@@ -10,6 +10,20 @@ local bEditing = false;
 local aAbilities = {};
 local hoverAbility;
 
+function onInit()
+--  Debug.console(window);
+--  Debug.console(window.getDatabaseNode());
+--  Debug.console(window.getMainNode());
+--  Debug.console(window.getDatabaseNode().getParent().getParent());
+--  Debug.console(window.getDatabaseNode().getParent().getParent().getParent());
+--  Debug.console(ActorManager.getActor("pc", window.getDatabaseNode()));
+--  Debug.console(ActorManager.getActor("pc", window.getDatabaseNode().getParent()));
+--  Debug.console("PC/NPC");
+--  Debug.console(ActorManager.getActor("npc", window.getDatabaseNode()));
+--  Debug.console(ActorManager.getActor("npc", window.getDatabaseNode().getParent()));
+end
+
+
 function onValueChanged()
   bParsed = false;
   bEditing = false;
@@ -64,8 +78,8 @@ end
 
 function onDoubleClick(x, y)
   if hoverAbility then
-    local rParent = window.getDatabaseNode().getParent().getParent().getParent();
-    local rActor = ActorManager.getActor("pc", rParent)
+    local sType, rParent = window.getMainNode();
+    local rActor = ActorManager.getActor(sType, rParent)
     ActionParser.doAction(rParent, rActor, aAbilities[hoverAbility]);
     bEditing = false;
     return true;

@@ -187,20 +187,18 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal)
     nCHP = DB.getValue(nodeTarget, "hps", 0) - nTotal;
     DB.setValue(nodeTarget, "hps", "number", nCHP);
   end
-  if nTotal > 0 then
-    local s = "";
-    if nTotal > 1 then 
-      s = "s";
-    end
-    local msg = {};
-    msg.icon = "dot_red";
-    msg.secret = (sTargetType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
-    msg.text = DB.getValue(nodeTarget, "name", "Someone") .. " took " .. nTotal .. " point" .. s .. " of damage" .. sNote4 .. "!";
-    if sChatDesc then
-      msg.text= msg.text .. "\n\n" .. sChatDesc;
-    end
-    Comm.deliverChatMessage(msg);
+  local s = "";
+  if nTotal ~= 1 then 
+    s = "s";
   end
+  local msg = {};
+  msg.icon = "dot_red";
+  msg.secret = (sTargetType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
+  msg.text = DB.getValue(nodeTarget, "name", "Someone") .. " took " .. nTotal .. " point" .. s .. " of damage" .. sNote4 .. "!";
+  if sChatDesc then
+    msg.text= msg.text .. "\n\n" .. sChatDesc;
+  end
+  Comm.deliverChatMessage(msg);
 end
 
 function parseDamage(s)

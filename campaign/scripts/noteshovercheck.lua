@@ -30,7 +30,7 @@ end
 function rebuild()
   removeButtons(); 
   aAbilities = ActionParser.parseComponents(getValue());
-  buildButtons();
+  --buildButtons();
 end
 
 function buttonPressed()
@@ -45,7 +45,7 @@ function buildButtons()
     Debug.console("Button", bn, a.orig);
     
     buttons[i] = window.createControl("notes_actions", bn);
-    buttons[i].setAnchor("top", parent, "bottom");
+    --buttons[i].setAnchor("top", parent, "bottom", "relative");
     parent = bn;
     buttons[i].setText(a.orig);
    end
