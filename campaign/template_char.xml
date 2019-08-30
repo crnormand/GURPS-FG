@@ -571,9 +571,25 @@
 	
 	<template name="notes_actions">
 		<buttoncontrol>
-			<anchored to="text" position="insidebottomleft" height="20" relation="relative" width="200">
-<!-- 				<right parent="text" anchor="right" relation="relative" /> -->
-			</anchored>
+			<anchored to="text" position="insideleft" />
+			<invisible />
+			<script>
+			  function onButtonPress()
+			    window.text.buttonPressed(self);
+			  end
+			  function onClickDown()
+			    window.text.onBClickDown(self);
+			  end
+			  function onClickRelease()
+			    window.text.onBClickRelease(self);
+			  end
+			  function onHover(state)
+			    window.text.onBHover(self, state);
+			  end
+			  function onDragStart(button, x, y, draginfo)
+			  	window.text.onBDragStart(self, button, x, y, draginfo);
+			  end
+			</script>
 		</buttoncontrol>
 	</template>
 </root>

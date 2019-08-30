@@ -24,9 +24,28 @@ local ATTRIBS = {
     { "IQ", "attributes.intelligence" },
     { "HT", "attributes.health" },
     { "WILL", "attributes.will" },
-    { "PER", "attributes.perception" }
+    { "Will", "attributes.will" },
+    { "PER", "attributes.perception" },
+    { "Per", "attributes.perception" }
   };
   
+--function onInit()
+--  Interface.onHotkeyActivated = onActivated;
+--end
+--
+--function onActivated(draginfo)
+--  if draginfo.getType() == "parsedRoll" then
+--    Debug.console(User.getActiveIdentities());
+--    if User.getCurrentIdentity() then
+--      local nodeid = "charsheet." ..  User.getCurrentIdentity();
+--      local node = DB.findNode(nodeid);
+--      Debug.console(nodeid, node);
+--      return true;
+--    end
+--  end
+--end
+--
+ 
 function trim(s)
    return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
@@ -43,17 +62,18 @@ function lastCrBefore(sText, index)
   end
 end
 
-function parseComponents(sText)
+function parseComponents(sText, dbNode, skipP)
   local aAbilities = {};
   local last = 1;
   for w in string.gmatch(sText, "%[.-%]") do
     local i, j = string.find(sText, w, last, true);
-    local action, target, mod = isAction(sText, i, j);
+    local action, target, mod = isAction(sText, i, j, dbNode);
     if action then
       local ability = {};
       ability.action = action;
       ability.orig = string.sub(sText, i+1, j-1)
       local startOfLine = lastCrBefore(sText, i);
+      if skipP then startOfLine = startOfLine + 3; end
       ability.desc = trim(string.sub(sText, startOfLine, i-1));
       ability.target = target;
       ability.mod = mod;
@@ -66,7 +86,7 @@ function parseComponents(sText)
   return aAbilities;
 end
 
-function isAction(sText, i, j)
+function isAction(sText, i, j, dbNode)
   local c1, c2, c3;
   local cmd = string.sub(sText, i+1, j-1);
   c1 = capture(cmd, "CR: ?(%d*)");
@@ -78,8 +98,32 @@ function isAction(sText, i, j)
     c1, c2 = capture(cmd, a[1].."(%d*)([+-]%d+)");   -- [ST+2]
     if c1 then return a[1], c1 , c2; end
   end
-  c1, c2 = capture(cmd, "(%d+)[dD]([+-]?%d*)")
+  c1, c2 = capture(cmd, "(%d+)[dD]([+-]?%d*)");  -- [2d+2]
   if c1 then return "DMG", c1, c2; end
+  c1, c2 = capture(cmd, "(.*)([+-]%d+)");  -- "Skill" +/-X
+  if c1 and isSkill(c1, dbNode) then
+    return "SKILL", c1, c2;
+  end
+  if isSkill(cmd, dbNode) then
+    return "SKILL", cmd, 0;
+  end
+end
+
+function isSkill(sText, dbNode)
+  for _,node in pairs(DB.getChildren(dbNode,"abilities.skilllist")) do
+    local name = DB.getValue(node,"name");
+    if sText == name then return true; end
+  end
+  return false;
+end
+
+function getSkillLevel(sText, dbNode)
+  for _,node in pairs(DB.getChildren(dbNode,"abilities.skilllist")) do
+    local name = DB.getValue(node,"name");
+    if sText == name then 
+      return DB.getValue(node, "level");
+    end
+  end
 end
 
 function capture(sText, sPattern)
@@ -101,6 +145,7 @@ function roll(type, desc, target, td, mod, dmg)
   rRoll.sTargetDesc = td;
   rRoll.sDamage = dmg;
   rRoll.aDice = { "d6","d6","d6" };
+  rRoll.bSecret = Input.isControlPressed();
   if (dmg) then
     local d ={};
     for i = 1, tonumber(target), 1 do d[i] = "d6"; end;
@@ -112,24 +157,35 @@ function roll(type, desc, target, td, mod, dmg)
 end
 
 
-function doAction(dbNode, rActor, ability)
+function doAction(dbNode, rActor, ability, draginfo)
+  Debug.console("doAction", dbNode, rActor, ability, draginfo);
+
   if ability.action == "CR" then
     local rRoll = roll("ability", "[SELF CONTROL]", ability.target, ability.desc);
-    ActionsManager.performAction(null, rActor, rRoll);
+ Debug.console("CR", draginfo, rActor, rRoll);
+    ActionsManager.performAction(draginfo, rActor, rRoll);
     return;
   end
   if ability.action == "DMG" then
-    local rRoll = roll("damage", "[DAMAGE]", ability.target, "", ability.mod, ability.orig);
-    ActionsManager.performAction(null, rActor, rRoll);
+    local rRoll = roll("damage", "[DAMAGE]", ability.target, "", 0, ability.orig);
+ Debug.console("DMG", draginfo, rActor, rRoll);
+    ActionsManager.performAction(draginfo, rActor, rRoll);
     return;
   end
-  
+  if (ability.action == "SKILL") then
+    local level = getSkillLevel(ability.target, dbNode);
+    local rRoll = roll("ability", "[SKILL]", level, ability.orig, ability.mod);
+ Debug.console("Skill", draginfo, rActor, rRoll);
+    ActionsManager.performAction(draginfo, rActor, rRoll);
+    return; 
+  end
   for i, a in pairs(ATTRIBS) do
     if ability.action == a[1] then
       local target = ability.target;
       if empty(target) then target = DB.getValue(dbNode, a[2]); end
       local rRoll = roll("ability", "[ATTRIBUTE]", target, ability.action, ability.mod);
-      ActionsManager.performAction(null, rActor, rRoll);
+ Debug.console("Attrib", draginfo, rActor, rRoll);
+      ActionsManager.performAction(draginfo, rActor, rRoll);
       return;
     end
   end

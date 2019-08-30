@@ -5,7 +5,9 @@
   attribution and copyright information.
 -->
 
+
 <root>
+
 	<windowclass name="charnote">
 		<frame>storybox</frame>
 		<placement>
@@ -19,8 +21,13 @@
 		<playercontrol />
 		<nodelete />
 		<tooltip field="name" />
+		<script>
+			function getMainNode()
+				return "pc", getDatabaseNode().getParent().getParent().getParent();
+			end
+		</script>
+		
 		<sheetdata>
-			
 			<link_story>
 				<class>charnote</class>
 			</link_story>
@@ -28,6 +35,13 @@
 			<genericcontrol name="rightanchor">
 				<anchored height="0" width="0">
 					<top offset="28" />
+					<right offset="-14" />
+				</anchored>
+			</genericcontrol>
+			
+			<genericcontrol name="anchorbottom">
+				<anchored height="0" width="0">
+					<bottom offset="-28" />
 					<right offset="-14" />
 				</anchored>
 			</genericcontrol>
@@ -47,14 +61,14 @@
 				<multilinespacing>16</multilinespacing>
 				<font>reference-r</font>
 				<selectioncolor>#FFD296</selectioncolor>
-<!-- 				<script file="campaign/scripts/noteshovercheck.lua" /> -->
-			</ft_record>
-						
-			<scrollbar>
+				<script file="campaign/scripts/noteshovercheck.lua" /> 			
+ 			</ft_record>
+			 			
+			<scrollbar name="scroll">
 				<anchored to="text" />
 				<target>text</target>
 			</scrollbar>
-
+						
 			<resize_storybox />
 			<close_storybox />
 		</sheetdata>

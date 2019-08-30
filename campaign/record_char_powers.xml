@@ -115,6 +115,10 @@
 				modifierslist_iadd.setVisible(v and modifierslist_iedit.getValue() == 1)
 				frame_modifiers.setVisible(v);
 			end
+
+			function getMainNode()
+				return "pc", getDatabaseNode().getParent().getParent().getParent();
+			end
 		</script>
 		<sheetdata>
 		

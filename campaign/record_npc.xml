@@ -19,6 +19,7 @@
 		<tooltip field="name" />
 		<nodelete />
 		<script file="campaign/scripts/npc.lua" />
+		
 		<sheetdata>
 			<sub_record_header name="header">
 				<class>npc_header</class>

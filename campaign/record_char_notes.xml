@@ -7,6 +7,11 @@
 
 <root>
 	<windowclass name="charsheet_notes">
+		<script>
+			function getMainNode()
+				return "pc", getDatabaseNode();
+			end
+		</script>
 		<sheetdata>
 
 			<!-- NOTES -->			
@@ -197,6 +202,7 @@
 					<bottom offset="-15" />
 				</anchored>
 				<multilinespacing>20</multilinespacing>
+				<script file="campaign/scripts/windowhovercheck.lua" />
 			</stringu>
 			<scrollbar_list>
 				<anchored to="description" />
@@ -206,6 +212,12 @@
 	</windowclass>
 
 	<windowclass name="char_note">
+		<script>
+			function getMainNode()
+				return "pc", getDatabaseNode();
+			end
+		</script>
+		
 		<margins control="0,0,0,2" />
 		<sheetdata>
 		
@@ -236,6 +248,7 @@
 					<left offset="5" />
 					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
 				</anchored>
+				<script file="campaign/scripts/windowhovercheck.lua" />
 			</string_textlistitem>
 			
 		</sheetdata>

@@ -236,7 +236,7 @@ function checkHotkey(draginfo)
 	if sDragType == "number" or sDragType == "modifierstack" then
 		addSlot(draginfo.getDescription(), draginfo.getNumberData());
 		return true;
-	end
+ 	end
 end
 
 function getTargeting()
@@ -271,6 +271,7 @@ end
 
 function onInit()
 	Interface.onHotkeyActivated = checkHotkey;
+	
 	for i,line in ipairs(GameSystem.targetactions) do
 	   ActionsManager.registerModHandler(line, applyModifiers);   -- rSource, rTarget, rRoll
 	end

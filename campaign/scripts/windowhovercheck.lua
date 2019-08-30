@@ -55,7 +55,8 @@ function onHoverUpdate(x, y)
   end
 
   if not bParsed then
-    aAbilities = ActionParser.parseComponents(getValue());
+    local sType, rParent = window.getMainNode();
+    aAbilities = ActionParser.parseComponents(getValue(), rParent);
     bParsed = true;
   end
   local nMouseIndex = getIndexAt(x, y);
@@ -82,6 +83,15 @@ function onDoubleClick(x, y)
     local rActor = ActorManager.getActor(sType, rParent)
     ActionParser.doAction(rParent, rActor, aAbilities[hoverAbility]);
     bEditing = false;
+    return true;
+  end
+end
+
+function onDragStart( button, x, y, draginfo) 
+  if hoverAbility > 0 then
+    local sType, rParent = window.getMainNode();
+    local rActor = ActorManager.getActor(sType, rParent)
+    ActionParser.doAction(rParent, rActor, aAbilities[hoverAbility], draginfo);
     return true;
   end
 end

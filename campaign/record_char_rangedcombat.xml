@@ -496,6 +496,11 @@
 					<right anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<tabtarget next="rof" prev="acc" />
+				<script>
+					function onInit()
+						setTooltipText(getValue());
+					end
+				</script>
 			</string_charfield>
 			<number_charmodfield name="acc">
 				<anchored to="rightanchor" width="20" height="20">
@@ -520,6 +525,12 @@
 					<right anchor="left" relation="relative" offset="-10" />
 				</anchored>
 				<tabtarget next="acc" prev="level" />
+				<script>
+					function onInit()
+						setTooltipText(getValue());
+					end
+				</script>
+				
 			</string_charfield>
 			<number_charfield name="level">
 				<rollable_ranged />

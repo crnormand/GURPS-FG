@@ -193,12 +193,43 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal)
   end
   local msg = {};
   msg.icon = "dot_red";
-  msg.secret = (sTargetType ~= "pc" and OptionsManager.getOption("SHNPC") == "status");
+  msg.secret = true;
+  --Debug.console(sTargetType, OptionsManager.getOption("SHNPC"), OptionsManager.getOption("SHPC"));
+  if sTargetType == "ct" and OptionsManager.getOption("SHNPC") == "detailed" then msg.secret = false; end
+  if sTargetType == "pc" and OptionsManager.getOption("SHPC") == "detailed" then msg.secret = false; end
   msg.text = DB.getValue(nodeTarget, "name", "Someone") .. " took " .. nTotal .. " point" .. s .. " of damage" .. sNote4 .. "!";
   if sChatDesc then
     msg.text= msg.text .. "\n\n" .. sChatDesc;
   end
   Comm.deliverChatMessage(msg);
+  
+  checkForStun(nodeTarget, msg.secret, nTotal);
+end
+
+function checkForStun(nodeTarget, bSecret, nTotal)
+  if nTotal < 1 then return; end
+  if hasAdvantage(nodeTarget, "High Pain Threshold")
+  then
+    if not bSecret
+    then
+      local msg = {font = "msgfont", icon = "roll_effect"};
+      msg.text = DB.getValue(nodeTarget, "name", "Someone") .. " does not suffer SHOCK due to High Pain Threshold";
+      Comm.deliverChatMessage(msg);
+    end
+    return;
+  end
+  if nTotal > 4 then nTotal = 4; end
+  local gm = 0;
+  if bSecret then gm = 1; end
+  EffectManager.addEffect("", "", nodeTarget, { sName = "Shock -" .. nTotal .. " DX/IQ", nDuration = 1, nGMOnly = gm, units = "sec"}, true);
+end
+
+function hasAdvantage(nodeTarget, sAdv)
+  for _,node in pairs(DB.getChildren(nodeTarget,"traits.adslist")) do
+    local name = DB.getValue(node,"name");
+    local found = string.find(name, sAdv, 1, true);   -- Does the Advantage start with sAdv?
+    if found then return true; end
+  end
 end
 
 function parseDamage(s)
